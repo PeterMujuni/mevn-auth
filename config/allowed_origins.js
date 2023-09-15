@@ -3,3 +3,5 @@ const origins = [
     'http://localhost:3500',
     'http://localhost:8080',
 ]
+
+module.exports = origins

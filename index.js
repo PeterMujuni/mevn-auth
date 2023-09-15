@@ -1,4 +1,4 @@
-require("dotenv").config;
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -8,7 +8,8 @@ const path = require('path')
 const corsOptions = require('./config/cors')
 const connectDB = require('./config/database')
 const credentials = require('./middleware/credentials')
-const errorHandlerMiddleware = require('./middleware/error_handler')
+const errorHandlerMiddleware = require('./middleware/error_handler');
+const authenticationMiddleware = require("./middleware/authentication");
 
 const app = express();
 const PORT = 3500;
@@ -29,6 +30,8 @@ app.use(express.json());
 // middelware for cookies
 app.use(cookieParser());
 
+app.use(authenticationMiddleware)
+
 // static files
 app.use('/static', express.static(path.join(__dirname, 'public')))
 
@@ -48,4 +51,7 @@ app.all('*', (req, res) => {
     }
 })
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+mongoose.connection.once('open', () => {
+    console.log('DB connected')
+    app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+})
