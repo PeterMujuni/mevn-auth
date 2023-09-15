@@ -40,6 +40,12 @@ app.use('/api/auth', require('./routes/api/auth'))
 
 app.all('*', (req, res) => {
     res.status(404)
+
+    if(req.accepts('json')){
+        res.json('error: 404 NOT FOUND')
+    }else {
+        res.type('text').send('404 NOT FOUNDs')
+    }
 })
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
