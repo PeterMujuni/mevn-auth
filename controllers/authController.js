@@ -39,6 +39,7 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
+  console.log("route has been hit");
   const { email, password } = req.body;
 
   if (!email || !password)
