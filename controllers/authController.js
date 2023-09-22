@@ -2,9 +2,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-async function register(req, res) {
-  const { username, email, first_name, last_name, password, password_confirm } =
-    req.body;
+const register = async (req, res) => {
+  const { username, email, first_name, last_name, password, confirm_terms } = req.body;
 
   if (
     !username ||
@@ -12,7 +11,7 @@ async function register(req, res) {
     !first_name ||
     !last_name ||
     !password ||
-    !password_confirm
+    !confirm_terms
   ) return res.status(422).json({ message: "Invalid fields" });
 
   if (password !== password_confirm) return res.status(422).json({ message: "Confirm password does not match password" });
@@ -29,7 +28,7 @@ async function register(req, res) {
       password: hashedPassword,
       first_name,
       last_name,
-      password_confirm,
+      confirm_terms,
     })
 
     return res.sendStatus(201);
@@ -38,7 +37,7 @@ async function register(req, res) {
   }
 }
 
-async function login(req, res) {
+const login = async (req, res) => {
   console.log("route has been hit");
   const { email, password } = req.body;
 
@@ -81,7 +80,7 @@ async function login(req, res) {
 
 }
 
-async function logout(req, res) {
+const logout = async (req, res) => {
   const cookies = req.cookies
 
   if(!cookies.refresh_token) return res.sendStatus(204)
@@ -102,7 +101,7 @@ async function logout(req, res) {
   res.sendStatus(204)
 }
 
-async function refresh(req, res) {
+const refresh = async (req, res) => {
     const cookies = req.cookies
 
     if(!cookies.refresh_token) return res.sendStatus(204)
@@ -129,7 +128,7 @@ async function refresh(req, res) {
     )
 }
 
-async function user(req, res) {
+const user = async (req, res) => {
   const user = req.user
 
   console.log("user: ", user);
